@@ -1,104 +1,35 @@
 /**
- * 
- */
-
-/**
+ * @author JoséPablo
  * @author helmuthnistal
- *
+ * @author Ricardo
+ * Esta será la interface que definirá los métodos de todos los radios
  */
-public class Radio {
-	
-	private boolean estado;
-	private boolean frecuencia;
-	private float emisora;
-	private float[] fm;
-	private float[] am;
 
+public interface Radio {
+	
 	/**
-	 * 
+	 * Este método servirá para saber si el radio se encuentra encendido o apagado
 	 */
-	public Radio() {
-		// TODO Auto-generated constructor stub
-		estado=false;
-		frecuencia=true;
-		emisora=100;
-		fm = new float[11];
-		am = new float[11];
-	}
+	public void estado();
 	
-	public void estado(){
-		estado=!estado;
-		//false= apagado
-		//true= encendido
-	}
+	/**
+	 * Aqui estableceremos si se encuentra en frecuencia FM o AM
+	 */
+	public void frecuencia();
 	
-	public void frecuencia(){
-		frecuencia=!frecuencia;
-		if(frecuencia){
-			emisora=(float) 87.8;
-		}else{
-			emisora=530;
-		}
-		//false= AM
-		//true= FM
-	}
+	/**
+	 * Con este método cambiaremos de estación dependiendo en qué frecuencia se encuentre el usuario
+	 */
+	public void cambiar(boolean valor);
 	
-	public void cambiar(boolean valor){
-		if(frecuencia){//FM
-			if(valor){
-				if(emisora==107.8){//DE LIMITE SUPERIOR A INFERIOR
-					emisora=(float) 87.8;
-				}else{
-					emisora+=0.2;
-				}
-			}else{
-				if(emisora==87.8){//DE LIMITE INFERIOR A SUPERIOR
-					emisora=(float) 107.8;
-				}else{
-					emisora+=-0.2;
-				}
-			}
-		}else{//AM
-			if(valor){
-				if(emisora==1610){//DE LIMITE SUPERIOR A INFERIOR
-					emisora=(float) 530;
-				}else{
-					emisora+=10;
-				}
-			}else{
-				if(emisora==530){//DE LIMITE INFERIOR A SUPERIOR
-					emisora=(float) 1610;
-				}else{
-					emisora+=-10;
-				}
-			}
-		}
-	}
+	/**
+	 * Con el método se asignara un espacio de memoria donde se guardarán las estaciones predilectas del usuario
+	 */
+	public void guardar(int x);
 	
-	public void guardar(int x){
-		if (frecuencia){//FM
-			fm[x]=emisora;
-		}else{//AM
-			am[x]=emisora;
-		}
-	}
+	/**
+	 * Se cambiará a una de las emisoras guardadas por el usuario en los espacio de memoria
+	 */
+	public float seleccionar(int y);
 	
-	public float seleccionar(int y){
-		if (frecuencia){//FM
-			if(fm[y]==0){
-				return (float) 87.8;
-			}else{
-				return fm[y];
-			}
-
-		}else{//AM
-			if(am[y]==0){
-				return (float) 530;
-			}else{
-				return fm[y];
-			}
-		}
-		
-	}
-
 }
