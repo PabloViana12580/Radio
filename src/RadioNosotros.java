@@ -1,103 +1,101 @@
-/**
- * @author JoséPablo
- * @author helmuthnistal
- * @author Ricardo
- * Esta será la clase representativa de nuestro radio que implementará los métodos de la clase Radio 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-public class RadioNosotros implements Radio {
-	
-	private float[] fm;
-	private float[] am;
-	private boolean estado; 
-	private boolean frecuencia; 
-	private float emisora; 
+package radio;
 
-	public RadioNosotros(){
-		fm = new float[11];
-		am = new float[11];
-		estado = false; 
-		frecuencia = false; 
-		emisora = 0;
-	}
-	
-	public void estado(){
-		 	estado=!estado;
-		 //false= apagado
-		 //true= encendido
-		 	}
-	
-	public void frecuencia(){
-		
-		frecuencia=!frecuencia;
-		if(frecuencia){
-			emisora=(float) 87.8;
-		}else{
-			emisora=530;
-		}
-		//false= AM
-		//true= FM
-		 
-	}
-	
-	public void cambiar(boolean valor){
-		
-		if(frecuencia){//FM
-			if(valor){
-				if(emisora==107.8){//DE LIMITE SUPERIOR A INFERIOR
-					emisora=(float) 87.8;
-				}else{
-					emisora+=0.2;
-				}
-			}else{
-				if(emisora==87.8){//DE LIMITE INFERIOR A SUPERIOR
-					emisora=(float) 107.8;
-				}else{
-					emisora+=-0.2;
-				}
-			}
-		}else{//AM
-			if(valor){
-				if(emisora==1610){//DE LIMITE SUPERIOR A INFERIOR
-					emisora=(float) 530;
-				}else{
-					emisora+=10;
-				}
-			}else{
-				if(emisora==530){//DE LIMITE INFERIOR A SUPERIOR
-					emisora=(float) 1610;
-				}else{
-					emisora+=-10;
-				}
-			}
-		}
-		
-	}
-	
-	public void guardar(int x){
+import javax.swing.JOptionPane;
 
-		if (frecuencia){//FM
-			fm[x]=emisora;
-		}else{//AM
-			am[x]=emisora;
-		}
-	}
-	
-	public float seleccionar(int y){
-		if (frecuencia){//FM
-			if(fm[y]==0){
-				return (float) 87.8;
-			}else{
-				return fm[y];
-			}
-
-		}else{//AM
-			if(am[y]==0){
-				return (float) 530;
-			}else{
-				return fm[y];
-			}
-		}
-		
-	}
-
+/**
+ *
+ * @author richi
+ */
+public class RadioNosotros extends Radio{
+    double[] FM= new double [12];
+    double[] AM= new double [12];
+    boolean estado=false;
+    boolean onda=true; //true es FM y false AM
+    double emisora=0;
+    
+   
+    public void estado(){
+        if(estado==false){
+            estado=true; //si esta apagada la radio se enciende
+        }else{
+            estado=false; //si esta encendida la rado se apaga
+        }
+    }
+    
+    public void frecuencias(boolean direccion){ //direccion de aumento o disminucion de frecuencia
+        if(direccion){
+            if (onda){
+                if(emisora==107.9){
+                    emisora=87.9;
+                }else{
+                    emisora= (emisora+0.2);
+                }
+            }
+            else{
+                if(emisora==1610){
+                    emisora=530;
+                }else{
+                    emisora=emisora+10;
+                }
+            }
+        }
+        else{
+            if (onda){
+                if(emisora==87.9){
+                    emisora=107.9;
+                }else{
+                    emisora=(emisora-0.2);
+                }
+            }
+            else{
+                if(emisora==530){
+                    emisora=1610;
+                }else{
+                    emisora=emisora-10;
+                }
+            }
+        }
+    }
+    
+    public void cambiar (boolean valor){
+    //cambia la onda que tenga la rado (AM a FM o viceversa)
+        if(valor==false){
+            onda=true; //la onda cambia a FM
+        }else{
+            onda=false; //la onda cambia a AM
+        }
+    }
+    
+    public void guardar(int x){
+        if(onda==true){
+            FM[x]=emisora;
+        }
+        else{
+            AM[x]=emisora;
+        }
+    }
+    
+    public void seleccionar (int y){
+        if(onda){
+            if(FM[y]==0){
+                JOptionPane.showMessageDialog(null, "No hay ninguna emisora guardada!");
+            }else{
+                emisora=FM[y];
+            }
+            
+        }else{
+            if(AM[y]==0){
+               JOptionPane.showMessageDialog(null, "No hay ninguna emisora guardada!"); 
+            }
+            else{
+                emisora=AM[y];
+            }
+        }
+    }  
+    
 }
